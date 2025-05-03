@@ -18,25 +18,19 @@ const initialBoard: KanbanBoardType = {
       tasks: [
         {
           id: uuidv4(),
-          title: 'Research new UI components',
-          description: 'Look into new UI component libraries for the next project phase.',
+          title: 'work out',
+          description: 'leg day!',
           priority: 'medium',
-          createdAt: new Date('2025-04-25')
+          createdAt: new Date('2025-05-03')
         },
         {
           id: uuidv4(),
-          title: 'Update documentation',
-          description: 'Update the developer documentation with the latest API changes.',
+          title: 'finish reading a paper',
+          description: 'take notes',
           priority: 'low',
           createdAt: new Date('2025-04-27')
         },
-        {
-          id: uuidv4(),
-          title: 'Fix navigation bug',
-          description: 'The navigation menu doesn\'t close properly on mobile devices.',
-          priority: 'high',
-          createdAt: new Date('2025-04-28')
-        }
+        
       ]
     },
     {
@@ -45,47 +39,15 @@ const initialBoard: KanbanBoardType = {
       tasks: [
         {
           id: uuidv4(),
-          title: 'Implement authentication',
-          description: 'Add user authentication using OAuth and JWT tokens.',
+          title: 'happy happy happy',
+          description: 'drink drink drink',
           priority: 'high',
           createdAt: new Date('2025-04-20')
         },
-        {
-          id: uuidv4(),
-          title: 'Create dashboard layout',
-          description: 'Design and implement the main dashboard layout with responsive features.',
-          priority: 'medium',
-          createdAt: new Date('2025-04-22')
-        }
+       
       ]
     },
-    {
-      id: uuidv4(),
-      title: 'Done',
-      tasks: [
-        {
-          id: uuidv4(),
-          title: 'Set up project repository',
-          description: 'Initialize the Git repository and configure CI/CD pipelines.',
-          priority: 'high',
-          createdAt: new Date('2025-04-15')
-        },
-        {
-          id: uuidv4(),
-          title: 'Design system implementation',
-          description: 'Create a shared design system with core components and tokens.',
-          priority: 'medium',
-          createdAt: new Date('2025-04-18')
-        },
-        {
-          id: uuidv4(),
-          title: 'Project planning',
-          description: 'Define project scope, milestones and resource allocation.',
-          priority: 'medium',
-          createdAt: new Date('2025-04-10')
-        }
-      ]
-    }
+    
   ]
 };
 
