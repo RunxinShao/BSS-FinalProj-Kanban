@@ -3,7 +3,10 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Header from '@/components/Header';
 import KanbanBoard from '@/components/KanbanBoard';
+import AuthForms from '@/components/AuthForms';
 import { KanbanBoard as KanbanBoardType } from '@/types/kanban';
+import { useAuth } from '@/contexts/AuthContext';
+import * as localStorageService from '@/services/localStorage';
 
 const initialBoard: KanbanBoardType = {
   id: uuidv4(),
@@ -87,11 +90,25 @@ const initialBoard: KanbanBoardType = {
 };
 
 const Index: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  const boards = localStorageService.getUserBoards();
+  const boardToUse = boards.length > 0 ? boards[0] : initialBoard;
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <div className="container mx-auto py-8 px-4 flex-1">
-        <KanbanBoard initialBoard={initialBoard} />
+        {isAuthenticated ? (
+          <KanbanBoard initialBoard={boardToUse} />
+        ) : (
+          <div className="max-w-xl mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-6">Welcome to Comfy Kanban Flow</h2>
+            <p className="text-center text-muted-foreground mb-8">
+              Please login or register to access your Kanban boards
+            </p>
+            <AuthForms />
+          </div>
+        )}
       </div>
     </div>
   );

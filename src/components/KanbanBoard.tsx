@@ -1,9 +1,9 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { KanbanBoard as KanbanBoardType, Task } from '@/types/kanban';
 import KanbanColumn from './KanbanColumn';
 import TaskForm from './TaskForm';
+import * as localStorageService from '@/services/localStorage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,22 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialBoard }) => {
   const [currentColumnId, setCurrentColumnId] = useState<string | undefined>(undefined);
   const [columnFormOpen, setColumnFormOpen] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState('');
+
+  // Load board data from localStorage
+  useEffect(() => {
+    const storedBoard = localStorageService.getBoardById(initialBoard.id);
+    if (storedBoard) {
+      setBoard(storedBoard);
+    } else {
+      // Save initial board if none exists
+      localStorageService.saveBoard(initialBoard);
+    }
+  }, [initialBoard]);
+
+  // Save changes to localStorage whenever the board changes
+  useEffect(() => {
+    localStorageService.saveBoard(board);
+  }, [board]);
 
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -109,7 +125,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialBoard }) => {
       tasks: column.tasks.filter(task => task.id !== taskId)
     }));
     
-    setBoard({ ...board, columns: newColumns });
+    const updatedBoard = { ...board, columns: newColumns };
+    setBoard(updatedBoard);
+    localStorageService.saveBoard(updatedBoard);
     toast('Task deleted');
   };
 
@@ -125,7 +143,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialBoard }) => {
         )
       }));
       
-      setBoard({ ...board, columns: newColumns });
+      const updatedBoard = { ...board, columns: newColumns };
+      setBoard(updatedBoard);
+      localStorageService.saveBoard(updatedBoard);
       toast('Task updated');
     } else if (columnId) {
       // Add new task
@@ -144,7 +164,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialBoard }) => {
         return column;
       });
       
-      setBoard({ ...board, columns: newColumns });
+      const updatedBoard = { ...board, columns: newColumns };
+      setBoard(updatedBoard);
+      localStorageService.saveBoard(updatedBoard);
       toast('Task created');
     }
     
@@ -165,11 +187,13 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ initialBoard }) => {
       tasks: []
     };
     
-    setBoard({
+    const updatedBoard = {
       ...board,
       columns: [...board.columns, newColumn]
-    });
+    };
     
+    setBoard(updatedBoard);
+    localStorageService.saveBoard(updatedBoard);
     setNewColumnTitle('');
     setColumnFormOpen(false);
     toast('Column added');
