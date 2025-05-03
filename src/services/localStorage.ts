@@ -1,3 +1,4 @@
+
 import { KanbanBoard, User } from '@/types/kanban';
 
 // Keys for localStorage
@@ -43,6 +44,11 @@ export const createUser = (username: string, password: string): User => {
   users.push(newUser);
   saveUsers(users);
   return newUser;
+};
+
+export const checkUserExists = (username: string): boolean => {
+  const users = getUsers();
+  return users.some(u => u.username === username);
 };
 
 export const authenticateUser = (username: string, password: string): User | null => {
@@ -116,19 +122,10 @@ export const exportUserData = (): string => {
   // Create a clean version of the user data (without password)
   const exportData = {
     username: currentUser.username,
-    boards: currentUser.boards.map(board => ({
-      ...board,
-      columns: board.columns.map(column => ({
-        ...column,
-        tasks: column.tasks.map(task => ({
-          ...task,
-          createdAt: task.createdAt.toISOString()
-        }))
-      }))
-    }))
+    boards: currentUser.boards
   };
   
-  return JSON.stringify(exportData, null, 2);
+  return JSON.stringify(exportData);
 };
 
 export const importUserData = (jsonData: string): boolean => {
@@ -163,4 +160,3 @@ export const importUserData = (jsonData: string): boolean => {
     return false;
   }
 };
-  

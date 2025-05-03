@@ -47,6 +47,20 @@ const initialBoard: KanbanBoardType = {
        
       ]
     },
+    {
+      id: uuidv4(),
+      title: 'Done',
+      tasks: [
+        {
+          id: uuidv4(),
+          title: 'finish the project',
+          description: ' have fun',
+          priority: 'high',
+          createdAt: new Date('2025-04-20')
+        },
+       
+      ]
+    }
     
   ]
 };
