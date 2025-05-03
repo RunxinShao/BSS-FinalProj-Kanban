@@ -19,12 +19,12 @@ export interface KanbanBoard {
   id: string;
   title: string;
   columns: Column[];
-  userId?: string; // Optional link to user
+  userId?: string; 
 }
 
 export interface User {
   id: string;
   username: string;
-  password: string; // In a real app, you would never store plain text passwords
+  password: string; 
   boards: KanbanBoard[];
 }
