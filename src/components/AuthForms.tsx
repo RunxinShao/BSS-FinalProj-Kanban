@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -45,6 +44,13 @@ const AuthForms: React.FC = () => {
     const success = register(registerUsername, registerPassword);
     if (success) {
       toast.success('Registration successful');
+      // Auto-login the user after successful registration
+      const loginSuccess = login(registerUsername, registerPassword);
+      if (loginSuccess) {
+        toast.success('Auto login successful');
+      } else {
+        toast.error('Auto login failed. Please try logging in manually.');
+      }
     } else {
       toast.error('Username already exists');
     }
