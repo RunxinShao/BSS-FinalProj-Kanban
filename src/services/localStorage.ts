@@ -1,4 +1,3 @@
-
 import { KanbanBoard, User } from '@/types/kanban';
 
 // Keys for localStorage
@@ -109,50 +108,59 @@ export const getBoardById = (boardId: string): KanbanBoard | undefined => {
 
 // Import/Export functions
 export const exportUserData = (): string => {
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    throw new Error("No user is logged in");
+  }
+  
+  // Create a clean version of the user data (without password)
+  const exportData = {
+    username: currentUser.username,
+    boards: currentUser.boards.map(board => ({
+      ...board,
+      columns: board.columns.map(column => ({
+        ...column,
+        tasks: column.tasks.map(task => ({
+          ...task,
+          createdAt: task.createdAt.toISOString()
+        }))
+      }))
+    }))
+  };
+  
+  return JSON.stringify(exportData, null, 2);
+};
+
+export const importUserData = (jsonData: string): boolean => {
+  try {
+    const importedData = JSON.parse(jsonData, dateReviver);
     const currentUser = getCurrentUser();
+    
     if (!currentUser) {
       throw new Error("No user is logged in");
     }
     
-    // Create a clean version of the user data (without password)
-    const exportData = {
-      username: currentUser.username,
-      boards: currentUser.boards
-    };
-    
-    return JSON.stringify(exportData);
-  };
-  
-  export const importUserData = (jsonData: string): boolean => {
-    try {
-      const importedData = JSON.parse(jsonData, dateReviver);
-      const currentUser = getCurrentUser();
-      
-      if (!currentUser) {
-        throw new Error("No user is logged in");
-      }
-      
-      // Validate the structure of imported data
-      if (!importedData.boards || !Array.isArray(importedData.boards)) {
-        throw new Error("Invalid data format");
-      }
-      
-      // Get all users
-      const users = getUsers();
-      const userIndex = users.findIndex(u => u.id === currentUser.id);
-      
-      if (userIndex === -1) {
-        throw new Error("User not found");
-      }
-      
-      // Update the boards for the current user
-      users[userIndex].boards = importedData.boards;
-      saveUsers(users);
-      
-      return true;
-    } catch (error) {
-      console.error("Error importing data:", error);
-      return false;
+    // Validate the structure of imported data
+    if (!importedData.boards || !Array.isArray(importedData.boards)) {
+      throw new Error("Invalid data format");
     }
-  };
+    
+    // Get all users
+    const users = getUsers();
+    const userIndex = users.findIndex(u => u.id === currentUser.id);
+    
+    if (userIndex === -1) {
+      throw new Error("User not found");
+    }
+    
+    // Update the boards for the current user
+    users[userIndex].boards = importedData.boards;
+    saveUsers(users);
+    
+    return true;
+  } catch (error) {
+    console.error("Error importing data:", error);
+    return false;
+  }
+};
   

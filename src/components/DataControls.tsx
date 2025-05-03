@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Upload } from 'lucide-react';
@@ -20,14 +19,23 @@ const DataControls: React.FC = () => {
       const downloadLink = document.createElement('a');
       downloadLink.href = url;
       downloadLink.download = `kanban-data-${new Date().toISOString().split('T')[0]}.json`;
+      
+      // Add link to document
       document.body.appendChild(downloadLink);
+      
+      // Trigger download
       downloadLink.click();
-      document.body.removeChild(downloadLink);
+      
+      // Clean up
+      setTimeout(() => {
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+      }, 100);
       
       toast.success('Data exported successfully');
     } catch (error) {
-      toast.error('Failed to export data');
-      console.error(error);
+      console.error('Export error:', error);
+      toast.error('Failed to export data. Please try again.');
     }
   };
   
