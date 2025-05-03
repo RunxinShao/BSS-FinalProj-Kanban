@@ -12,7 +12,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <Kanban size={24} className="text-primary mr-2" />
-          <h1 className="text-xl font-semibold">Comfy Kanban Flow</h1>
+          <h1 className="text-xl font-semibold">NiuBee Kanban</h1>
         </div>
         
         {isAuthenticated && user && (

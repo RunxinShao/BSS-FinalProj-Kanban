@@ -64,7 +64,7 @@ const Index: React.FC = () => {
           <KanbanBoard initialBoard={boardToUse} />
         ) : (
           <div className="max-w-xl mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-6">Welcome to Comfy Kanban Flow</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">Welcome to NiuBee Kanban!</h2>
             <p className="text-center text-muted-foreground mb-8">
               Please login or register to access your Kanban boards
             </p>
