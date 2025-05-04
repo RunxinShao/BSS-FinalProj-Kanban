@@ -16,7 +16,7 @@ export function useIsMobile() {
 
     const mediaQuery = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
     mediaQuery.addEventListener("change", handleResize)
-    
+
     handleResize()
 
     return () => mediaQuery.removeEventListener("change", handleResize)
