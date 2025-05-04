@@ -147,7 +147,7 @@ export const importUserData = (jsonData: string): boolean => {
     const userIndex = users.findIndex(u => u.id === currentUser.id);
     
     if (userIndex === -1) {
-      throw new Error("User not found");
+      throw new Error("User not found!");
     }
     
     // Update the boards for the current user
